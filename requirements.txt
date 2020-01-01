@@ -8,3 +8,5 @@ jsonschema
 MarkupSafe
 Werkzeug
 jsonify
+pythonwhois
+dnspython
