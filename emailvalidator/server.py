@@ -1,16 +1,15 @@
 from flask import Flask, render_template, request, redirect, session, url_for, jsonify
-import emailvalidator
+from emailvalidator import emailvalidator
+
+# debug = False
 app = Flask(__name__)
 app.secret_key = 'howdy_pardner'
-debug = False
-
-
 
 @app.route('/email/validate', methods=['POST'])
 def add_message():
 	content = request.get_json()
-	
-	return emailvalidator.emailvalidator.Validate_Email(content)
+	answer = emailvalidator.Validate_Email(content)
+	return answer
 
 
 if __name__ == "__main__":
