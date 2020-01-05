@@ -1,13 +1,10 @@
 import argparse
-import posixpath
 import os
 import platform
-import tarfile
 import sys
 import subprocess
 import shlex
-import shutil
-import stat
+
 ARROW = '========>'
 
 class BuildError(Exception):
