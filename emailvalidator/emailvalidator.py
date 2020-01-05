@@ -30,12 +30,14 @@ class emailvalidator():
 		if not return_dict['schema']['valid']: return return_dict
 
 		email_address = input_json['email']
+		return_dict['regex'] = {}
+		emailvalidator._Validate_Regex(return_dict['regex'], email_address)
+		if not return_dict['regex']['valid']: return return_dict
 		email_split = email_address.split('@')
 		email_domain = email_split[1]
 		email_mailbox = email_split[0]
 
-		return_dict['regex'] = {}
-		emailvalidator._Validate_Regex(return_dict['regex'], email_address)
+
 		if not return_dict['regex']['valid']: return return_dict
 		mx_record = emailvalidator._Fetch_MX_Record(email_domain)
 		return_dict['dns'] = {}
@@ -126,11 +128,11 @@ class emailvalidator():
 	def _Validate_Web_Reputation(dict_root: dict, email_domain: str):
 		dict_root['valid'] = False
 		
-		chrome_options = Options()
-		chrome_options.add_argument("--no-sandbox")
-		chrome_options.add_argument("--disable-dev-shm-usage")
-		chrome_options.add_argument("--headless")
-		driver = webdriver.Chrome(executable_path='/usr/bin/chromedriver', chrome_options=chrome_options)
+		options = Options()
+		options.add_argument("--no-sandbox")
+		options.add_argument("--disable-dev-shm-usage")
+		options.add_argument("--headless")
+		driver = webdriver.Chrome(executable_path='/usr/bin/chromedriver', options=options)
 		driver.get(config.TALOS_ADDRESS + email_domain) # Talos also offers straight out email reputation but that seems a bit too obvious to use.
 		response = driver.page_source
 		driver.quit()

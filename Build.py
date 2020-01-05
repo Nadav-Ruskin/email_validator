@@ -35,7 +35,7 @@ def Execute_Shell(command):
 	stdout = ''.join(stdout_arr) or ''
 	if p.returncode != 0:
 		print('Error. Return code: ' + str(p.returncode) + '. Command: ' + command)
-		raise Exception
+		raise BuildError
 	return ''.join(stdout)
 
 def main(raw_arguments):
@@ -48,6 +48,7 @@ def main(raw_arguments):
 	argument_parser.add_argument('--kill', action='store_true')
 	argument_parser.add_argument('--rm', action='store_true')
 	argument_parser.add_argument('--rmi', action='store_true')
+	argument_parser.add_argument('--test', action='store_true')
 
 	parsed_arguments = shlex.split(raw_arguments)
 	args, unknown = argument_parser.parse_known_args(parsed_arguments)
@@ -84,6 +85,15 @@ def main(raw_arguments):
 		command = 'docker rmi emailvalidator'
 		Execute_Shell(command)
 		print('{} Done removing image.'.format(ARROW))
+	if args.test:
+		print('{} Running internal tests...'.format(ARROW))
+		command = "docker exec emailvalidator_container /bin/bash -c 'python3 -m unittest tests/test_emailvalidator.py'"
+		Execute_Shell(command)
+		print('{} Done running internal tests.'.format(ARROW))
+		print('{} Running external tests...'.format(ARROW))
+		command = 'cd emailvalidator && python3 -m unittest tests/test_external.py'
+		Execute_Shell(command)
+		print('{} Done running internal tests.'.format(ARROW))
 
 
 
