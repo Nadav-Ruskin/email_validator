@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, url_for, jsonify
 from emailvalidator import emailvalidator
 
-# debug = False
+debug = False
 app = Flask(__name__)
 app.secret_key = 'howdy_pardner'
 

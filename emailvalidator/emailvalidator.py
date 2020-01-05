@@ -1,3 +1,5 @@
+import exceptions
+import config
 from werkzeug import datastructures
 import json
 import shutil
@@ -6,8 +8,6 @@ import re
 import dns.resolver
 import socket
 import smtplib
-import exceptions
-import config
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
@@ -127,6 +127,8 @@ class emailvalidator():
 		dict_root['valid'] = False
 		
 		chrome_options = Options()
+		chrome_options.add_argument("--no-sandbox")
+		chrome_options.add_argument("--disable-dev-shm-usage")
 		chrome_options.add_argument("--headless")
 		driver = webdriver.Chrome(executable_path='/usr/bin/chromedriver', chrome_options=chrome_options)
 		driver.get(config.TALOS_ADDRESS + email_domain) # Talos also offers straight out email reputation but that seems a bit too obvious to use.
